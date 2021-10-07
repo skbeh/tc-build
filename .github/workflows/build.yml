@@ -12,7 +12,7 @@ jobs:
       - name: Download scripts
         uses: actions/checkout@v2
 
-      - name: Deploy builder
+      - name: Build toolchain
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GIT_AUTHOR_NAME: "github-actions"
