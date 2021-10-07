@@ -5,7 +5,6 @@ import sys
 
 import requests
 
-
 # Mostly core datacenters, ranked by latency from the maintainer's location
 preferred_locations = (
     "sv15",
@@ -77,16 +76,20 @@ def check_locations(prices, max_price, locations):
 
 def select_machine():
     for machine, ondemand_price in preferred_machines:
-        with requests.get(f"https://api.packet.net/market/spot/prices?plan={machine}", headers={"X-Auth-Token": token}) as r:
+        with requests.get(
+                f"https://api.packet.net/market/spot/prices?plan={machine}",
+                headers={"X-Auth-Token": token}) as r:
             data = r.json()["spot_market_prices"]
 
-        prices = {loc: list(matches.values())[0]["price"]
-                  for loc, matches in data.items()}
+        prices = {
+            loc: list(matches.values())[0]["price"]
+            for loc, matches in data.items()
+        }
         # 10x == no spot market capacity available, but it's closer to 4x for g2.large (+ 0.01)
         max_price = ondemand_price * 4
 
-        location, price = check_locations(
-            prices, max_price, preferred_locations)
+        location, price = check_locations(prices, max_price,
+                                          preferred_locations)
         if location:
             return {
                 "type": machine,
