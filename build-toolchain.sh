@@ -31,7 +31,7 @@ rm -f install/lib/*.a install/lib/*.la
 # Strip remaining products
 msg "Stripping remaining products..."
 for f in $(find install -type f -exec file {} \; | grep 'not stripped' | awk '{print $1}'); do
-	strip ${f: : -1}
+	strip "${f: : -1}"
 done
 
 # Set executable rpaths so setting LD_LIBRARY_PATH isn't necessary
@@ -41,6 +41,7 @@ for bin in $(find install -mindepth 2 -maxdepth 3 -type f -exec file {} \; | gre
 	bin="${bin: : -1}"
 
 	echo "$bin"
+	# shellcheck disable=SC2086
 	patchelf --set-rpath '$ORIGIN/../lib' "$bin"
 done
 
