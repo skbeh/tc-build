@@ -15,12 +15,8 @@ curl -L https://gitlab.kitware.com/cmake/cmake/-/archive/v3.21.3/cmake-v3.21.3.t
 pushd cmake-v3.21.3
 ./bootstrap --parallel="$(nproc)"
 make -j"$(nproc)"
-make install
+sudo make install
 popd
-
-# Clone build scripts
-git clone --depth 1 "https://github.com/$GH_BUILD_REPO" build
-cd build
 
 # Clone LLVM and apply fixup patches *before* building
 git clone --depth 1 "https://github.com/llvm/llvm-project"
@@ -31,4 +27,3 @@ if [ -n "$(echo patches/*.patch)" ]; then
 fi
 
 ./build-toolchain.sh
-./upload-build.sh
