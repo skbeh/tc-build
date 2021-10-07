@@ -13,12 +13,14 @@ function msg() {
 
 # Build LLVM
 msg "Building LLVM..."
+CMAKE_C_FLAGS='-O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
 ./build-llvm.py \
-	--clang-vendor "Proton" \
 	--targets "AArch64;X86" \
 	"$repo_flag" \
 	--pgo kernel-defconfig \
-	--lto full
+	--lto full \
+	--no-ccache \
+	-D CMAKE_C_FLAGS=$CMAKE_C_FLAGS CMAKE_CXX_FLAGS=$CMAKE_C_FLAGS
 
 # Build binutils
 msg "Building binutils..."
