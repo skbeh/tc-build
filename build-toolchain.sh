@@ -20,7 +20,7 @@ CMAKE_C_FLAGS='-O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
 	--pgo kernel-defconfig \
 	--lto full \
 	--no-ccache \
-	-D CMAKE_C_FLAGS=$CMAKE_C_FLAGS CMAKE_CXX_FLAGS=$CMAKE_C_FLAGS
+	-D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS"
 
 # Build binutils
 msg "Building binutils..."
