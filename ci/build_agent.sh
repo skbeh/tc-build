@@ -4,8 +4,8 @@ shopt -s nullglob
 set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
-apt update
-apt install -y bison ca-certificates ccache clang cmake curl file flex gcc g++ git make ninja-build python3 texinfo zlib1g-dev libssl-dev libelf-dev patchelf
+sudo apt update
+sudo apt install -y bison ca-certificates ccache clang cmake curl file flex gcc g++ git make ninja-build python3 texinfo zlib1g-dev libssl-dev libelf-dev patchelf
 
 git config --global user.name "$GIT_NAME"
 git config --global user.email "$GIT_EMAIL"
