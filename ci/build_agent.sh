@@ -13,8 +13,8 @@ git config --global user.email "$GIT_EMAIL"
 # Build a newer version of CMake to satisfy LLVM's requirements
 curl -L https://gitlab.kitware.com/cmake/cmake/-/archive/v3.18.0/cmake-v3.18.0.tar.gz | tar xzf -
 pushd cmake-v3.18.0
-./bootstrap --parallel=$(nproc)
-make -j$(nproc)
+./bootstrap --parallel="$(nproc)"
+make -j"$(nproc)"
 make install
 popd
 
