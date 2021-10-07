@@ -20,4 +20,4 @@ jobs:
           GIT_AUTHOR_NAME: 'github-actions'
           GIT_AUTHOR_EMAIL: '41898282+github-actions[bot]@users.noreply.github.com'
         run: |
-          ci/launch.sh
+          ci/build_agent.sh
