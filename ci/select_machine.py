@@ -58,6 +58,7 @@ else:
     print("A Packet API token is required.")
     exit(1)
 
+
 def check_locations(prices, max_price, locations):
     for loc in locations:
         # Not all machines are available in all locations
@@ -70,24 +71,28 @@ def check_locations(prices, max_price, locations):
 
         if loc in prices and prices[loc] < max_price and not market_full:
             return loc, prices[loc]
-    
+
     return (None, None)
+
 
 def select_machine():
     for machine, ondemand_price in preferred_machines:
         with requests.get(f"https://api.packet.net/market/spot/prices?plan={machine}", headers={"X-Auth-Token": token}) as r:
             data = r.json()["spot_market_prices"]
 
-        prices = {loc: list(matches.values())[0]["price"] for loc, matches in data.items()}
+        prices = {loc: list(matches.values())[0]["price"]
+                  for loc, matches in data.items()}
         # 10x == no spot market capacity available, but it's closer to 4x for g2.large (+ 0.01)
         max_price = ondemand_price * 4
 
-        location, price = check_locations(prices, max_price, preferred_locations)
+        location, price = check_locations(
+            prices, max_price, preferred_locations)
         if location:
             return {
                 "type": machine,
                 "location": location,
-                "price": str(price * 1.2) # 20% margin to ensure we get enough time to run
+                # 20% margin to ensure we get enough time to run
+                "price": str(price * 1.2)
                 # Stringified because Terraform requires all external values to be strings
             }
 
