@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup clang
+        uses: egor-tensin/setup-clang@v1
+        
       - name: Download scripts
         uses: actions/checkout@v2
 
