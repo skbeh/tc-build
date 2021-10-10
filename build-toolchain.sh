@@ -13,14 +13,12 @@ function msg() {
 
 # Build LLVM
 msg "Building LLVM..."
-CMAKE_C_FLAGS='-O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
 ./build-llvm.py \
     --targets "AArch64;X86" \
     "$repo_flag" \
     --pgo kernel-defconfig \
     --lto full \
-    --no-ccache \
-    -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS"
+    --no-ccache
 
 # Build binutils
 msg "Building binutils..."
@@ -34,7 +32,7 @@ rm -f install/lib/*.a install/lib/*.la
 # Strip remaining products
 msg "Stripping remaining products..."
 for f in $(find install -type f -exec file {} \; | grep 'not stripped' | awk '{print $1}'); do
-    strip "${f::-1}"
+    llvm-strip "${f::-1}"
 done
 
 # Set executable rpaths so setting LD_LIBRARY_PATH isn't necessary
