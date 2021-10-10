@@ -839,7 +839,7 @@ def project_cmake_defines(args, stage):
             projects = "all"
     else:
         if bootstrap_stage(args, stage):
-            projects = "clang;lld"
+            projects = "clang;lld;polly"
             if args.pgo:
                 projects += ';compiler-rt'
         elif instrumented_stage(args, stage):
