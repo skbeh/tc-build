@@ -10,12 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Load libeatmydata
-        run: echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" >> /etc/profile
+        run: echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" | sudo tee -a /etc/profile
       - name: Setup clang
         env:
           DEBIAN_FRONTEND: "noninteractive"
         run: |
-          apt update && apt install -y bison ca-certificates ccache cmake curl file flex gcc git make ninja-build python3 texinfo zlib1g-dev libssl-dev libelf-dev patchelf zstd eatmydata
+          sudo -E apt update
+          sudo -E apt install -y cmake make ninja-build libelf-dev patchelf zstd libeatmydata
           wget https://github.com/vijaymalav564/vortex-clang/archive/refs/heads/main.zip
           unzip main.zip && rm main.zip
           mv vortex-clang-main/* /usr && rm -r vortex-clang-main
