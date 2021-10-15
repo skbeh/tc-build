@@ -17,9 +17,9 @@ jobs:
         run: |
           sudo -E apt update
           sudo -E apt install -y cmake make ninja-build libelf-dev patchelf zstd libeatmydata1
-          wget https://github.com/kdrag0n/proton-clang/archive/refs/heads/master.zip
-          unzip main.zip && rm main.zip
-          sudo cp -r vortex-clang-main/* /usr && rm -r vortex-clang-main
+          wget -q https://github.com/kdrag0n/proton-clang/archive/refs/heads/master.zip
+          unzip master.zip && rm master.zip
+          sudo cp -r proton-clang-master/* /usr && rm -r proton-clang-master
         
       - name: Download scripts
         uses: actions/checkout@v2
