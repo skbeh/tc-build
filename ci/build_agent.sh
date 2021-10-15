@@ -18,4 +18,4 @@ if [ -n "$(echo patches/*.patch)" ]; then
     popd
 fi
 
-eatmydata ./build-toolchain.sh
+./build-toolchain.sh
