@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+#set -eo pipefail
 
 # Function to show an informational message
 function msg() {
@@ -21,6 +21,7 @@ CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
     --lto full \
     --no-ccache \
     -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS"
+cat /home/runner/work/tc-build/tc-build/build/llvm/stage1/CMakeFiles/CMakeError.log
 
 # Build binutils
 msg "Building binutils..."
