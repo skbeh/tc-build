@@ -22,7 +22,9 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GIT_AUTHOR_NAME: "github-actions"
           GIT_AUTHOR_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
-        run: ci/build_agent.sh
+        run: |
+          echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" >> /etc/profile
+          ci/build_agent.sh
 
       - name: Create release
         uses: ncipollo/release-action@v1
