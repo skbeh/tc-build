@@ -16,7 +16,7 @@ jobs:
           DEBIAN_FRONTEND: "noninteractive"
         run: |
           sudo -E apt update
-          sudo -E apt install -y cmake make ninja-build libelf-dev patchelf zstd libeatmydata
+          sudo -E apt install -y cmake make ninja-build libelf-dev patchelf zstd libeatmydata1
           wget https://github.com/vijaymalav564/vortex-clang/archive/refs/heads/main.zip
           unzip main.zip && rm main.zip
           mv vortex-clang-main/* /usr && rm -r vortex-clang-main
