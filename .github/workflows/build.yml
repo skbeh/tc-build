@@ -9,10 +9,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Load libeatmydata
+        run: echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" >> /etc/profile
       - name: Setup clang
-        uses: egor-tensin/setup-clang@v1
-        with:
-          version: 13
+        env:
+          DEBIAN_FRONTEND: "noninteractive"
+        run: |
+          apt update && apt install -y bison ca-certificates ccache cmake curl file flex gcc git make ninja-build python3 texinfo zlib1g-dev libssl-dev libelf-dev patchelf zstd eatmydata
+          wget https://github.com/vijaymalav564/vortex-clang/archive/refs/heads/main.zip
+          unzip main.zip && rm main.zip
+          mv vortex-clang-main/* /usr && rm -r vortex-clang-main
         
       - name: Download scripts
         uses: actions/checkout@v2
@@ -22,9 +28,7 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GIT_AUTHOR_NAME: "github-actions"
           GIT_AUTHOR_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
-        run: |
-          echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" >> /etc/profile
-          ci/build_agent.sh
+        run: ci/build_agent.sh
 
       - name: Create release
         uses: ncipollo/release-action@v1
