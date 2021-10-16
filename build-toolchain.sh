@@ -3,12 +3,14 @@
 set -eo pipefail
 
 case "$1" in
-    -s) stage="--build-stage${2}-only"
-    ;;
+    -s)
+        stage="--build-stage${2}-only"
+        ;;
     '') ;;
-    *) echo "`basename ${0}`:usage: [-s stage]"
-    exit 1
-    ;;
+    *)
+        echo "$(basename ${0}):usage: [-s stage]"
+        exit 1
+        ;;
 esac
 
 # Function to show an informational message
