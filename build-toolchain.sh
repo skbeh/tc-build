@@ -4,7 +4,7 @@ set -eo pipefail
 
 case "$1" in
     -s)
-        build_stage=(--build_stage "${2}")
+        build_stage=(--build-stage "${2}")
         if [ "$2" == 3 ]; then
             pgo=(--pgo kernel-defconfig)
         else
