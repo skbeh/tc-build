@@ -12,7 +12,8 @@ case "$1" in
         fi
         ;;
     '')
-        stage=()
+        build_stage=()
+        pgo=(--pgo kernel-defconfig)
         ;;
     *)
         echo "$(basename "${0}"):usage: [-s build_stage]"
