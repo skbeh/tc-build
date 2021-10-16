@@ -767,9 +767,8 @@ def cc_ld_cmake_defines(dirs, env_vars, stage):
         # Optional to have
         ar = if_binary_exists("llvm-ar", cc)
         ranlib = if_binary_exists("llvm-ranlib", cc)
-        # Cannot be used from host due to potential incompatibilities
-        # clang_tblgen = None
-        # llvm_tblgen = None
+        clang_tblgen = if_binary_exists("clang-tblgen", cc)
+        llvm_tblgen = if_binary_exists("llvm-tblgen", cc)
     else:
         if pgo_stage(stage):
             stage = 2
