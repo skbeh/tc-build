@@ -35,7 +35,7 @@ jobs:
           key: ${{ runner.os }}-stage1-${{ github.run_id }}
 
   build-second:
-    #needs: build-first
+    needs: build-first
     runs-on: ubuntu-latest
     steps:
       - name: Setup depends
@@ -52,7 +52,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: build/llvm/stage1
-          key: ${{ runner.os }}-stage1-1348780980
+          key: ${{ runner.os }}-stage1-${{ github.run_id }}
 
       - name: Build toolchain
         env:
