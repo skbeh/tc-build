@@ -28,7 +28,7 @@ jobs:
       - name: Build toolchain
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
-        run: build-toolchain.sh -s 1
+        run: ./build-toolchain.sh -s 1
 
       - name: Pass cache to next stage
         uses: actions/cache@v2
