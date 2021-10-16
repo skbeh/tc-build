@@ -5,10 +5,10 @@ set -eo pipefail
 case "$1" in
     -s)
         stage="--stage=${2}"
-        if [ $2 == 3 ]; then
-            pgo = '--pgo kernel-defconfig'
+        if [ "$2" == 3 ]; then
+            pgo='--pgo kernel-defconfig'
         else
-            pgo = ''
+            pgo=''
         fi
         ;;
     '')
