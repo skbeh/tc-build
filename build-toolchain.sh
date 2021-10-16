@@ -4,7 +4,7 @@ set -eo pipefail
 
 case "$1" in
     -s)
-        stage=(--stage "${2}")
+        build_stage=(--build_stage "${2}")
         if [ "$2" == 3 ]; then
             pgo=(--pgo kernel-defconfig)
         else
@@ -15,7 +15,7 @@ case "$1" in
         stage=()
         ;;
     *)
-        echo "$(basename "${0}"):usage: [-s stage]"
+        echo "$(basename "${0}"):usage: [-s build_stage]"
         exit 1
         ;;
 esac
@@ -37,7 +37,7 @@ CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
     --no-ccache \
     -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" \
     -b release/13.x \
-    "${stage[@]}" \
+    "${build_stage[@]}" \
     "${pgo[@]}"
 
 # Build binutils

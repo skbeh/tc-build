@@ -357,7 +357,7 @@ def parse_parameters(root_folder):
 
                                """),
                                action="store_true")
-    opt_options.add_argument("--stage",
+    opt_options.add_argument("--build-stage",
                              help=textwrap.dedent("""\
                         Set the stage which is to be build.
 
@@ -1213,8 +1213,8 @@ def generate_pgo_profiles(args, dirs):
 
 
 def do_multistage_build(args, dirs, env_vars):
-    if args.stage:
-        stages = [args.stage]
+    if args.build_stage:
+        stages = [args.build_stage]
     else:
         stages = [1]
 
