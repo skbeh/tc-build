@@ -4,7 +4,7 @@ set -eo pipefail
 
 case "$1" in
     -s)
-        stage="--stage=${2}"
+        stage="--stage ${2}"
         if [ "$2" == 3 ]; then
             pgo='--pgo kernel-defconfig'
         else
@@ -32,10 +32,10 @@ function msg() {
 msg "Building LLVM..."
 CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
 ./build-llvm.py --targets 'AArch64;X86' \
-    $repo_flag \
+    "$repo_flag" \
     --lto full \
     --no-ccache \
-    -D CMAKE_C_FLAGS=$CMAKE_C_FLAGS CMAKE_CXX_FLAGS=$CMAKE_C_FLAGS \
+    -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" \
     -b release/13.x \
     $stage $pgo
 
