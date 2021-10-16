@@ -360,9 +360,9 @@ def parse_parameters(root_folder):
     opt_options.add_argument("-s",
                              "--stage",
                              help=textwrap.dedent("""\
-                    Set the stage which is to be build.
+                        Set the stage which is to be build.
 
-                    """),
+                        """),
                              type=str)
     return parser.parse_args()
 

@@ -4,7 +4,7 @@ set -eo pipefail
 
 case "$1" in
     -s)
-        stage="--build-stage=${2}"
+        stage="--stage="${2}""
         ;;
     '') ;;
     *)

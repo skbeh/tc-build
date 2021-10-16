@@ -62,7 +62,7 @@ jobs:
       - name: Build toolchain
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
-        run: build-toolchain.sh -s 2
+        run: ./build-toolchain.sh -s 2
 
       - name: Pass folder to next stage
         uses: actions/cache@v2
@@ -96,7 +96,7 @@ jobs:
       - name: Build toolchain
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
-        run: build-toolchain.sh -s 3
+        run: ./build-toolchain.sh -s 3
 
       - name: Create release
         uses: ncipollo/release-action@v1
