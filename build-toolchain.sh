@@ -15,8 +15,7 @@ esac
 
 # Function to show an informational message
 function msg() {
-    # shellcheck disable=SC2145
-    echo -e "\e[1;32m$@\e[0m"
+    echo -e "\e[1;32m$*\e[0m"
 }
 
 # Don't touch repo if running on CI
