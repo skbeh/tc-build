@@ -31,8 +31,13 @@ function msg() {
 # Build LLVM
 msg "Building LLVM..."
 CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
-LLVM_BUILD_FLAGS="--targets AArch64;X86 $repo_flag --lto full --no-ccache -D CMAKE_C_FLAGS=$CMAKE_C_FLAGS CMAKE_CXX_FLAGS=$CMAKE_C_FLAGS -b release/13.x $stage $pgo"
-./build-llvm.py "$LLVM_BUILD_FLAGS"
+./build-llvm.py --targets 'AArch64;X86' \
+    $repo_flag \
+    --lto full \
+    --no-ccache \
+    -D CMAKE_C_FLAGS=$CMAKE_C_FLAGS CMAKE_CXX_FLAGS=$CMAKE_C_FLAGS \
+    -b release/13.x \
+    $stage $pgo
 
 # Build binutils
 msg "Building binutils..."
