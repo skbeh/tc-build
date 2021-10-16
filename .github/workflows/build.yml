@@ -58,7 +58,7 @@ jobs:
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
           LD_PRELOAD: "/usr/lib/x86_64-linux-gnu/libeatmydata.so"
-        run: PATH="/home/runner/work/tc-build/tc-build/build/llvm/stage1/bin:$PATH" ./build-toolchain.sh -s 2 || cat /home/runner/work/tc-build/tc-build/build/llvm/stage2/CMakeFiles/CMakeError.log
+        run: ./build-toolchain.sh -s 2
 
       - name: SSH connection to Actions
         uses: P3TERX/ssh2actions@v1.0.0

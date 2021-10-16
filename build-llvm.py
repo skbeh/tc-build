@@ -1264,6 +1264,7 @@ def main():
         ref = args.branch
     fetch_llvm_binutils(root_folder, not args.no_update, args.shallow_clone,
                         ref)
+    
     cleanup(build_folder, args.incremental)
     dirs = Directories(build_folder, install_folder, linux_folder, root_folder)
     do_multistage_build(args, dirs, env_vars)
