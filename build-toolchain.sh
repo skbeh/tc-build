@@ -33,12 +33,11 @@ CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
 ./build-llvm.py \
     --targets "AArch64;X86" \
     "$repo_flag" \
-    "$pgo" \
     --lto full \
     --no-ccache \
     -b 'release/13.x' \
     -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" \
-    "$stage"
+    "$stage" "$pgo"
 
 # Build binutils
 msg "Building binutils..."
