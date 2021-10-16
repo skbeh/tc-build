@@ -2,6 +2,14 @@
 
 set -eo pipefail
 
+case "$1" in
+    -s) stage="--build-stage${2}-only"
+    ;;
+    *) echo "`basename ${0}`:usage: [-s stage]"
+    exit 1
+    ;;
+esac
+
 # Function to show an informational message
 function msg() {
     # shellcheck disable=SC2145
@@ -21,7 +29,8 @@ CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
     --lto full \
     --no-ccache \
     -b 'release/13.x'
-    -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS"
+    -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" \
+    "$stage"
 
 # Build binutils
 msg "Building binutils..."
