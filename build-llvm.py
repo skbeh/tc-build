@@ -848,7 +848,7 @@ def project_cmake_defines(args, stage):
             if args.pgo:
                 projects += ';compiler-rt'
         elif instrumented_stage(args, stage):
-            projects = "clang;lld"
+            projects = "clang;lld;polly"
         elif args.projects:
             projects = args.projects
         else:
