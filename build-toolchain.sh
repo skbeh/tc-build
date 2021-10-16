@@ -4,7 +4,7 @@ set -eo pipefail
 
 case "$1" in
     -s)
-        stage="--build-stage${2}-only"
+        stage="--build-stage=${2}"
         ;;
     '') ;;
     *)
@@ -60,5 +60,6 @@ for bin in $(find install -mindepth 2 -maxdepth 3 -type f -exec file {} \; | gre
     # shellcheck disable=SC2016
     patchelf --set-rpath '$ORIGIN/../lib' "$bin"
 done
-
+if [!stage || "$1" == 3];then
 tar --zstd -cf clang.tar.zst install
+fi

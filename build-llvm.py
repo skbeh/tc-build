@@ -357,7 +357,13 @@ def parse_parameters(root_folder):
 
                                """),
                                action="store_true")
+    opt_options.add_argument("-s",
+                        "--stage",
+                        help=textwrap.dedent("""\
+                    Set the stage which is to be build.
 
+                    """),
+                        type=str)
     return parser.parse_args()
 
 
@@ -763,8 +769,8 @@ def cc_ld_cmake_defines(dirs, env_vars, stage):
         ar = if_binary_exists("llvm-ar", cc)
         ranlib = if_binary_exists("llvm-ranlib", cc)
         # Cannot be used from host due to potential incompatibilities
-        clang_tblgen = None
-        llvm_tblgen = None
+        # clang_tblgen = None
+        # llvm_tblgen = None
     else:
         if pgo_stage(stage):
             stage = 2
@@ -1208,12 +1214,15 @@ def generate_pgo_profiles(args, dirs):
 
 
 def do_multistage_build(args, dirs, env_vars):
-    stages = [1]
+    if args.stage:
+        stages = [args.stage]
+    else:
+        stages = [1]
 
-    if not args.build_stage1_only:
-        stages += [2]
-        if args.pgo:
-            stages += [3]
+        if not args.build_stage1_only:
+            stages += [2]
+            if args.pgo:
+                stages += [3]
 
     for stage in stages:
         dirs.build_folder.joinpath("stage%d" % stage).mkdir(parents=True,
