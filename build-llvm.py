@@ -730,7 +730,7 @@ def get_stage_binary(binary, dirs, stage):
     :return: A path suitable for a cmake define
     """
     return dirs.build_folder.joinpath("stage%d" % stage, "bin",
-                                      binary).as_posix()
+                                      binary).as_posix().strip()
 
 
 def if_binary_exists(binary_name, cc):
