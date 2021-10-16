@@ -60,6 +60,6 @@ for bin in $(find install -mindepth 2 -maxdepth 3 -type f -exec file {} \; | gre
     # shellcheck disable=SC2016
     patchelf --set-rpath '$ORIGIN/../lib' "$bin"
 done
-if [ -z stage || "$1" == 3 ]; then
+if [ -z "$1" ] || [ "$1" == 3 ]; then
     tar --zstd -cf clang.tar.zst install
 fi
