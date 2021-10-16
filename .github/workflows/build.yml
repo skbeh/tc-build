@@ -60,6 +60,9 @@ jobs:
           LD_PRELOAD: "/usr/lib/x86_64-linux-gnu/libeatmydata.so"
         run: PATH="/home/runner/work/tc-build/tc-build/build/llvm/stage1/bin:$PATH" ./build-toolchain.sh -s 2 || cat /home/runner/work/tc-build/tc-build/build/llvm/stage2/CMakeFiles/CMakeError.log
 
+      - name: SSH connection to Actions
+        uses: P3TERX/ssh2actions@v1.0.0
+
       - name: Pass folder to next stage
         uses: actions/cache@v2
         with:
