@@ -5,6 +5,11 @@ set -eo pipefail
 case "$1" in
     -s)
         stage="--stage=${2}"
+        if [ $2 == 3 ]; then
+            pgo = '--pgo kernel-defconfig'
+        else
+            pgo = ''
+        fi
         ;;
     '')
         stage=''
@@ -14,7 +19,6 @@ case "$1" in
         exit 1
         ;;
 esac
-
 # Function to show an informational message
 function msg() {
     echo -e "\e[1;32m$*\e[0m"
@@ -29,7 +33,7 @@ CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
 ./build-llvm.py \
     --targets "AArch64;X86" \
     "$repo_flag" \
-    --pgo kernel-defconfig \
+    "$pgo" \
     --lto full \
     --no-ccache \
     -b 'release/13.x' \
