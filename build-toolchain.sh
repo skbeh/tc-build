@@ -6,7 +6,9 @@ case "$1" in
     -s)
         stage="--stage=${2}"
         ;;
-    '') ;;
+    '')
+        stage=''
+        ;;
     *)
         echo "$(basename "${0}"):usage: [-s stage]"
         exit 1
