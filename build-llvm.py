@@ -357,8 +357,7 @@ def parse_parameters(root_folder):
 
                                """),
                                action="store_true")
-    opt_options.add_argument("-s",
-                             "--stage",
+    opt_options.add_argument("--stage",
                              help=textwrap.dedent("""\
                         Set the stage which is to be build.
 
