@@ -1,0 +1,106 @@
+name: Build & upload toolchain
+on:
+  push:
+  schedule:
+    # 3 PM PST on Saturdays
+    - cron: "0 22 * * SAT"
+
+jobs:
+  build-first:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load libeatmydata
+        run: echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" | sudo tee -a /etc/profile
+      - name: Setup depends
+        env:
+          DEBIAN_FRONTEND: "noninteractive"
+        run: |
+          sudo -E apt update
+          sudo -E apt install -y cmake ninja-build libelf-dev patchelf libeatmydata1
+          wget -q https://github.com/kdrag0n/proton-clang/archive/refs/heads/master.zip
+          unzip master.zip && rm master.zip
+          sudo cp -r proton-clang-master/* /usr && rm -r proton-clang-master
+
+      - name: Load libeatmydata
+        run: echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" | sudo tee -a /etc/profile
+
+      - name: Download scripts
+        uses: actions/checkout@v2
+
+      - name: Build toolchain
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: build-toolchain.sh -s 1
+
+      - name: Pass cache to next stage
+        uses: actions/cache@v2
+        with:
+          path: build/llvm/stage1
+          key: ${{ runner.os }}-stage1-${{ github.run_id }}
+
+  build-second:
+    needs: build-first
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup depends
+        env:
+          DEBIAN_FRONTEND: "noninteractive"
+        run: |
+          sudo -E apt update
+          sudo -E apt install -y cmake ninja-build patchelf libeatmydata1
+
+      - name: Load libeatmydata
+        run: echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" | sudo tee -a /etc/profile
+
+      - name: Download scripts
+        uses: actions/checkout@v2
+
+      - name: Receive cache
+        uses: actions/cache@v2
+        with:
+          path: build/llvm/stage1
+          key: ${{ runner.os }}-stage1-${{ github.run_id }}
+
+      - name: Build toolchain
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: build-toolchain.sh -s 2
+
+      - name: Pass folder to next stage
+        uses: actions/cache@v2
+        with:
+          path: build/llvm/stage2
+          key: ${{ runner.os }}-stage2-${{ github.run_id }}
+
+  build-third:
+    needs: build-second
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup depends
+        env:
+          DEBIAN_FRONTEND: "noninteractive"
+        run: |
+          sudo -E apt update
+          sudo -E apt install -y cmake ninja-build patchelf zstd libeatmydata1
+
+      - name: Load libeatmydata
+        run: echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" | sudo tee -a /etc/profile
+
+      - name: Download scripts
+        uses: actions/checkout@v2
+
+      - name: Receive cache
+        uses: actions/cache@v2
+        with:
+          path: build/llvm/stage3
+          key: ${{ runner.os }}-stage3-${{ github.run_id }}
+
+      - name: Build toolchain
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: build-toolchain.sh -s 3
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "clang.tar.zst"
