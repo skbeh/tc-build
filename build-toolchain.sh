@@ -19,6 +19,7 @@ case "$1" in
         exit 1
         ;;
 esac
+
 # Function to show an informational message
 function msg() {
     echo -e "\e[1;32m$*\e[0m"
@@ -30,13 +31,9 @@ function msg() {
 # Build LLVM
 msg "Building LLVM..."
 CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
-./build-llvm.py \
-    --targets "AArch64;X86" \
-    "$repo_flag" \
-    --lto full \
-    --no-ccache \
-    -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" \
-    -b 'release/13.x' "$stage" "$pgo"
+LLVM_BUILD_FLAGS = "--targets "AArch64
+X86" "$repo_flag" --lto full --no-ccache -D CMAKE_C_FLAGS=$CMAKE_C_FLAGS CMAKE_CXX_FLAGS=$CMAKE_C_FLAGS -b 'release/13.x' $stage $pgo"
+./build-llvm.py "$LLVM_BUILD_FLAGS"
 
 # Build binutils
 msg "Building binutils..."
