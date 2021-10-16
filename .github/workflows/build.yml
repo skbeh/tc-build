@@ -62,7 +62,7 @@ jobs:
       - name: Build toolchain
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
-        run: ls -al ~/work/ && ./build-toolchain.sh -s 2
+        run: /home/runner/work/tc-build/tc-build/build/llvm/stage1/bin/clang++ && ./build-toolchain.sh -s 2
 
       - name: Pass folder to next stage
         uses: actions/cache@v2
