@@ -37,7 +37,7 @@ jobs:
           key: ${{ runner.os }}-stage1-${{ github.run_id }}
 
   build-second:
-    needs: build-first
+    #needs: build-first
     runs-on: ubuntu-latest
     steps:
       - name: Setup depends
@@ -57,12 +57,12 @@ jobs:
         uses: actions/cache@v2
         with:
           path: build/llvm/stage1
-          key: ${{ runner.os }}-stage1-${{ github.run_id }}
+          key: ${{ runner.os }}-stage1-1348780980
 
       - name: Build toolchain
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
-        run: ./build-toolchain.sh -s 2
+        run: ls -l /home/runner/work/tc-build/tc-build/build/llvm/ && ./build-toolchain.sh -s 2
 
       - name: Pass folder to next stage
         uses: actions/cache@v2
