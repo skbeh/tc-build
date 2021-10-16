@@ -358,12 +358,12 @@ def parse_parameters(root_folder):
                                """),
                                action="store_true")
     opt_options.add_argument("-s",
-                        "--stage",
-                        help=textwrap.dedent("""\
+                             "--stage",
+                             help=textwrap.dedent("""\
                     Set the stage which is to be build.
 
                     """),
-                        type=str)
+                             type=str)
     return parser.parse_args()
 
 
