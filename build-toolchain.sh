@@ -37,7 +37,8 @@ CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
     --no-ccache \
     -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" \
     -b release/13.x \
-    $stage $pgo
+    "${stage[@]}" \
+    "${pgo[@]}"
 
 # Build binutils
 msg "Building binutils..."
