@@ -9,8 +9,6 @@ jobs:
   build-first:
     runs-on: ubuntu-latest
     steps:
-      - name: Load libeatmydata
-        run: echo "export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so" | sudo tee -a /etc/profile
       - name: Setup depends
         env:
           DEBIAN_FRONTEND: "noninteractive"
