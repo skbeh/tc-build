@@ -8,7 +8,7 @@ case "$1" in
         ;;
     '') ;;
     *)
-        echo "$(basename ${0}):usage: [-s stage]"
+        echo "$(basename "${0}"):usage: [-s stage]"
         exit 1
         ;;
 esac
