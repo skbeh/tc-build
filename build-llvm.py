@@ -362,7 +362,7 @@ def parse_parameters(root_folder):
                         Set the stage which is to be build.
 
                         """),
-                             type=str)
+                             type=int)
     return parser.parse_args()
 
 
