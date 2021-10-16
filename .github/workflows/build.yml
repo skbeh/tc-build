@@ -60,9 +60,6 @@ jobs:
           LD_PRELOAD: "/usr/lib/x86_64-linux-gnu/libeatmydata.so"
         run: ./build-toolchain.sh -s 2
 
-      - name: SSH connection to Actions
-        uses: P3TERX/ssh2actions@v1.0.0
-
       - name: Pass folder to next stage
         uses: actions/cache@v2
         with:
