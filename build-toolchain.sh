@@ -10,7 +10,7 @@ case "$1" in
         else
             incremental=()
         fi
-        if [ "$2" -eq 3] ; then
+        if [ "$2" -eq 3 ]; then
             pgo=(--pgo kernel-defconfig)
         else
             pgo=()
