@@ -86,7 +86,7 @@ jobs:
       - name: Receive cache
         uses: actions/cache@v2
         with:
-          path: build/llvm/stage1
+          path: build/llvm/stage2
           key: ${{ runner.os }}-stage2-1-${{ github.run_id }}
 
       - name: Build toolchain
@@ -99,10 +99,42 @@ jobs:
         uses: actions/cache@v2
         with:
           path: build/llvm/stage2
-          key: ${{ runner.os }}-stage2-${{ github.run_id }}
+          key: ${{ runner.os }}-stage2-2-${{ github.run_id }}
 
-  build-third:
+  build-third-1:
     needs: build-second-2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup depends
+        env:
+          DEBIAN_FRONTEND: "noninteractive"
+        run: |
+          sudo -E apt update
+          sudo -E apt install -y cmake ninja-build patchelf libeatmydata1
+
+      - name: Download scripts
+        uses: actions/checkout@v2
+
+      - name: Receive cache
+        uses: actions/cache@v2
+        with:
+          path: build/llvm/stage2
+          key: ${{ runner.os }}-stage2-2-${{ github.run_id }}
+
+      - name: Build toolchain
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          LD_PRELOAD: "/usr/lib/x86_64-linux-gnu/libeatmydata.so"
+        run: ./build-toolchain.sh -s 3
+
+      - name: Pass folder to next stage
+        uses: actions/cache@v2
+        with:
+          path: build/llvm/stage3
+          key: ${{ runner.os }}-stage3-1-${{ github.run_id }}
+
+  build-third-2:
+    needs: build-third-1
     runs-on: ubuntu-latest
     steps:
       - name: Setup depends
@@ -119,7 +151,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: build/llvm/stage3
-          key: ${{ runner.os }}-stage3-${{ github.run_id }}
+          key: ${{ runner.os }}-stage3-1-${{ github.run_id }}
 
       - name: Build toolchain
         env:
