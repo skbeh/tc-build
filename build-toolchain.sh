@@ -42,7 +42,7 @@ CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine'
     "$repo_flag" \
     --lto full \
     --no-ccache \
-    -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" LLVM_PARALLEL_LINK_JOBS=2 \
+    -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" LLVM_PARALLEL_LINK_JOBS=1 \
     -b release/13.x \
     "${build_stage[@]}" \
     "${pgo[@]}" \
