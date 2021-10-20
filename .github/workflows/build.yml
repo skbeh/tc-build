@@ -102,7 +102,7 @@ jobs:
           key: ${{ runner.os }}-stage2-${{ github.run_id }}
 
   build-third:
-    needs: build-second
+    needs: build-second-2
     runs-on: ubuntu-latest
     steps:
       - name: Setup depends
