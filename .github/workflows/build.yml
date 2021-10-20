@@ -34,7 +34,7 @@ jobs:
           path: build/llvm/stage1
           key: ${{ runner.os }}-stage1-${{ github.run_id }}
 
-  build-second:
+  build-second-1:
     needs: build-first
     runs-on: ubuntu-latest
     steps:
