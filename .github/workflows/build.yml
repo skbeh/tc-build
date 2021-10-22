@@ -60,7 +60,7 @@ jobs:
           LD_PRELOAD: "/usr/lib/x86_64-linux-gnu/libeatmydata.so"
         run: |
           ./build-toolchain.sh -s 2 &
-          sleep 3590m
+          sleep 350m
           exit 0
 
       - name: Pass folder to next stage
@@ -133,7 +133,7 @@ jobs:
           LD_PRELOAD: "/usr/lib/x86_64-linux-gnu/libeatmydata.so"
         run: |
           ./build-toolchain.sh -s 3 &
-          sleep 3590m
+          sleep 350m
           exit 0
 
       - name: Pass folder to next stage
