@@ -37,7 +37,7 @@ function msg() {
 
 # Build LLVM
 msg "Building LLVM..."
-CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -march=x86-64-v3'
+CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-plt -march=x86-64-v3'
 ./build-llvm.py --targets 'AArch64;X86' \
     "$repo_flag" \
     --lto full \
