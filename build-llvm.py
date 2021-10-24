@@ -1181,7 +1181,7 @@ def pgo_llvm_build(args, dirs):
     # Then, build LLVM as if it were the full final toolchain
     stage = "pgo"
     dirs.build_folder.joinpath(stage).mkdir(parents=True, exist_ok=True)
-    if not args.incremental and not dirs.build_folder.joinpath("stage3", "build.ninja").is_file():
+    if not args.incremental or not dirs.build_folder.joinpath("stage3", "build.ninja").is_file():
         invoke_cmake(args, dirs, None, stage)
     invoke_ninja(args, dirs, stage)
 
