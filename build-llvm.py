@@ -1227,7 +1227,7 @@ def do_multistage_build(args, dirs, env_vars):
     for stage in stages:
         dirs.build_folder.joinpath("stage%d" % stage).mkdir(parents=True,
                                                             exist_ok=True)
-        if not args.incremental and not dirs.build_folder.joinpath("stage%d" % stage, "build.ninja").is_file():
+        if not args.incremental or not dirs.build_folder.joinpath("stage%d" % stage, "build.ninja").is_file():
             invoke_cmake(args, dirs, env_vars, stage)
         invoke_ninja(args, dirs, stage)
         # Build profiles after stage 2 when using PGO
