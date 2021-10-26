@@ -66,7 +66,8 @@ jobs:
       - name: Pass folder to next stage
         uses: actions/cache@v2
         with:
-          path: build/llvm/stage2
+          # path: build/llvm/stage2
+          path: build/llvm/
           key: ${{ runner.os }}-stage2-1-${{ github.run_id }}
 
   build-second-2:
@@ -92,7 +93,7 @@ jobs:
       - name: Receive cache from stage 2-1
         uses: actions/cache@v2
         with:
-          path: build/llvm/stage2
+          path: build/llvm/
           key: ${{ runner.os }}-stage2-1-${{ github.run_id }}
 
       - name: Build toolchain
