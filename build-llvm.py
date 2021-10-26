@@ -597,7 +597,7 @@ def fetch_llvm_binutils(root_folder, update, shallow, ref):
         extra_args = ()
         if shallow:
             extra_args = ("--depth", "1")
-            extra_args += ("--single-branch", )
+            extra_args += ("--single-branch", "-b", ref)
         subprocess.run([
             "git", "clone", *extra_args,
             "https://github.com/llvm/llvm-project",
