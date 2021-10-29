@@ -73,6 +73,11 @@ jobs:
     needs: build-second-1
     runs-on: ubuntu-latest
     steps:
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@v1.0
+        with:
+          swap-size-gb: 8
+
       - name: Setup depends
         env:
           DEBIAN_FRONTEND: "noninteractive"
@@ -140,6 +145,11 @@ jobs:
     needs: build-third-1
     runs-on: ubuntu-latest
     steps:
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@v1.0
+        with:
+          swap-size-gb: 8
+
       - name: Setup depends
         env:
           DEBIAN_FRONTEND: "noninteractive"
