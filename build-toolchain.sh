@@ -2,24 +2,20 @@
 
 set -eo pipefail
 
+args=()
+
 case "$1" in
     -s)
-        build_stage=(--build-stage "$2")
+        args+=(--build-stage "$2")
         if [ "$2" -ge 2 ]; then
-            incremental=(--incremental)
-        else
-            incremental=()
+            args+=(--incremental)
         fi
         if [ "$2" -eq 3 ]; then
-            pgo=(--pgo kernel-defconfig)
-        else
-            pgo=()
+            args+=(--pgo kernel-defconfig)
         fi
         ;;
     '')
-        build_stage=()
-        incremental=()
-        pgo=(--pgo kernel-defconfig)
+        args+=(--pgo kernel-defconfig)
         ;;
     *)
         echo "$(basename "$0"):usage: [-s build_stage]"
@@ -44,9 +40,7 @@ CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-s
     --no-ccache \
     -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" LLVM_PARALLEL_LINK_JOBS=1 \
     -b release/13.x \
-    "${build_stage[@]}" \
-    "${pgo[@]}" \
-    "${incremental[@]}"
+    "${args[@]}"
 
 # Build binutils
 msg "Building binutils..."
