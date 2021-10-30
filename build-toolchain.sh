@@ -29,13 +29,12 @@ function msg() {
 }
 
 # Don't touch repo if running on CI
-[ -z "$GITHUB_RUN_ID" ] && repo_flag="--shallow-clone" || repo_flag="--no-update"
+[ -z "$GITHUB_RUN_ID" ] && args+=(--shallow-clone) || args+=(--no-update)
 
 # Build LLVM
 msg "Building LLVM..."
 CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-plt -fno-stack-protector -march=x86-64-v3'
 ./build-llvm.py --targets 'AArch64;X86' \
-    "$repo_flag" \
     --lto full \
     --no-ccache \
     -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" LLVM_PARALLEL_LINK_JOBS=1 \
