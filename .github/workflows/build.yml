@@ -31,7 +31,9 @@ jobs:
       - name: Pass cache to next stage
         uses: actions/cache@v2
         with:
-          path: build
+          path: |
+            build
+            llvm-project
           key: ${{ runner.os }}-stage1-${{ github.run_id }}
 
   build-second-1:
@@ -51,7 +53,9 @@ jobs:
       - name: Receive cache
         uses: actions/cache@v2
         with:
-          path: build
+          path: |
+            build
+            llvm-project
           key: ${{ runner.os }}-stage1-${{ github.run_id }}
 
       - name: Build toolchain
@@ -66,7 +70,9 @@ jobs:
       - name: Pass folder to next stage
         uses: actions/cache@v2
         with:
-          path: build
+          path: |
+            build
+            llvm-project
           key: ${{ runner.os }}-stage2-1-${{ github.run_id }}
 
   build-second-2:
@@ -91,7 +97,9 @@ jobs:
       - name: Receive cache
         uses: actions/cache@v2
         with:
-          path: build
+          path: |
+            build
+            llvm-project
           key: ${{ runner.os }}-stage2-1-${{ github.run_id }}
 
       - name: Build toolchain
@@ -103,7 +111,9 @@ jobs:
       - name: Pass folder to next stage
         uses: actions/cache@v2
         with:
-          path: build
+          path: |
+            build
+            llvm-project
           key: ${{ runner.os }}-stage2-2-${{ github.run_id }}
 
   build-third-1:
@@ -123,7 +133,9 @@ jobs:
       - name: Receive cache
         uses: actions/cache@v2
         with:
-          path: build
+          path: |
+            build
+            llvm-project
           key: ${{ runner.os }}-stage2-2-${{ github.run_id }}
 
       - name: Build toolchain
@@ -138,7 +150,9 @@ jobs:
       - name: Pass folder to next stage
         uses: actions/cache@v2
         with:
-          path: build
+          path: |
+            build
+            llvm-project
           key: ${{ runner.os }}-stage3-1-${{ github.run_id }}
 
   build-third-2:
@@ -163,7 +177,9 @@ jobs:
       - name: Receive cache
         uses: actions/cache@v2
         with:
-          path: build
+          path: |
+            build
+            llvm-project
           key: ${{ runner.os }}-stage3-1-${{ github.run_id }}
 
       - name: Build toolchain
