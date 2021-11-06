@@ -30,6 +30,7 @@ function msg() {
 
 CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-plt -fno-stack-protector -march=x86-64-v3'
 cmake_flags=(CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS")
+
 # Don't touch repo if running on CI
 [ -z "$GITHUB_RUN_ID" ] && args+=(--shallow-clone) || args+=(--no-update) && cmake_flags+=("LLVM_PARALLEL_LINK_JOBS=1")
 
