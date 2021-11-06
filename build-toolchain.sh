@@ -28,16 +28,17 @@ function msg() {
     echo -e "\e[1;32m$*\e[0m"
 }
 
+CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-plt -fno-stack-protector -march=x86-64-v3'
+cmake_flags=(CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS")
 # Don't touch repo if running on CI
-[ -z "$GITHUB_RUN_ID" ] && args+=(--shallow-clone) || args+=(--no-update)
+[ -z "$GITHUB_RUN_ID" ] && args+=(--shallow-clone) || args+=(--no-update) && cmake_flags+=("LLVM_PARALLEL_LINK_JOBS=1")
 
 # Build LLVM
 msg "Building LLVM..."
-CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-plt -fno-stack-protector -march=x86-64-v3'
 ./build-llvm.py --targets 'AArch64;X86' \
     --lto full \
     --no-ccache \
-    -D CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS" LLVM_PARALLEL_LINK_JOBS=1 \
+    -D "${cmake_flags[@]}" \
     -b release/13.x \
     "${args[@]}"
 
