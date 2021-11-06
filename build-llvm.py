@@ -949,6 +949,7 @@ def stage_specific_cmake_defines(args, dirs, stage):
         if instrumented_stage(args, stage):
             defines['LLVM_BUILD_INSTRUMENTED'] = 'IR'
             defines['LLVM_BUILD_RUNTIME'] = 'OFF'
+            defines['LLVM_VP_COUNTERS_PER_SITE'] = '3'
 
         # If we are at the final stage, use PGO/Thin LTO if requested
         if stage == get_final_stage(args):
@@ -965,11 +966,6 @@ def stage_specific_cmake_defines(args, dirs, stage):
         for key in keys:
             if not key in str(args.defines):
                 defines[key] = ''
-
-        # For LLVMgold.so, which is used for LTO with ld.gold
-        defines['LLVM_BINUTILS_INCDIR'] = dirs.root_folder.joinpath(
-            utils.current_binutils(), "include").as_posix()
-        defines['LLVM_ENABLE_PLUGINS'] = 'ON'
 
     return defines
 
@@ -1008,6 +1004,9 @@ def build_cmake_defines(args, dirs, env_vars, stage):
 
     # Removes system dependency on terminfo to keep the dynamic library dependencies slim
     defines['LLVM_ENABLE_TERMINFO'] = 'OFF'
+
+    defines['LLVM_ENABLE_PIC'] = 'OFF'
+    defines['LLVM_ENABLE_LIBCXX'] = 'ON'
 
     return defines
 
