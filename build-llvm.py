@@ -1016,8 +1016,11 @@ def build_cmake_defines(args, dirs, env_vars, stage):
     # Removes system dependency on terminfo to keep the dynamic library dependencies slim
     defines['LLVM_ENABLE_TERMINFO'] = 'OFF'
 
-    defines['LLVM_ENABLE_PIC'] = 'OFF'
-    # defines['LLVM_ENABLE_LIBCXX'] = 'ON'
+    defines['LLVM_ENABLE_LIBCXX'] = 'ON'
+    defines['LLVM_ENABLE_RUNTIMES'] = 'libcxx;libcxxabi'
+    defines['CLANG_DEFAULT_LINKER'] = 'lld'
+    defines['CLANG_DEFAULT_CXX_STDLIB'] = 'libc++'
+    defines['CLANG_DEFAULT_RTLIB'] = 'compiler-rt'
 
     return defines
 
