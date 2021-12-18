@@ -27,9 +27,9 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -p)
-	    args+=(--pgo kernel-defconfig --pgo llvm)
-	    shift
-	    ;;
+            args+=(--pgo kernel-defconfig --pgo llvm)
+            shift
+            ;;
         '')
             args+=(--pgo kernel-defconfig --pgo llvm)
             shift
