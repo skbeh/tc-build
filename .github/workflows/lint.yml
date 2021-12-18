@@ -9,27 +9,4 @@ jobs:
   shfmt:
     uses: ClangBuiltLinux/actions-workflows/.github/workflows/shfmt.yml@main
   yapf:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: yapf
-        uses: AlexanderMelde/yapf-action@v1.0
-  shfmt-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          go-version: "1.17.1"
-      - uses: actions/cache@v2
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go
-          restore-keys: |
-            ${{ runner.os }}-go-
-      - name: Run shfmt
-        run: |
-          GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
-          while read -r f; do
-            PATH=$HOME/go/bin:$PATH shfmt -ci -d -i 4 $f
-          done < <(find . -type f -name "*.sh")
+    uses: ClangBuiltLinux/actions-workflows/.github/workflows/yapf.yml@main
