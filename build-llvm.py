@@ -392,8 +392,8 @@ def versioned_binaries(binary_name):
     tot_llvm_ver = 11
     try:
         response = request.urlopen(
-            'https://raw.githubusercontent.com/llvm/llvm-project/main/llvm/CMakeLists.txt'
-        )
+            'https://raw.githubusercontent.com/llvm/llvm-project/main/llvm/CMakeLists.txt',
+            timeout=5)
         to_parse = None
         data = response.readlines()
         for line in data:
@@ -1006,7 +1006,7 @@ def build_cmake_defines(args, dirs, env_vars, stage):
     defines['LLVM_ENABLE_TERMINFO'] = 'OFF'
 
     defines['LLVM_ENABLE_PIC'] = 'OFF'
-    defines['LLVM_ENABLE_LIBCXX'] = 'ON'
+    # defines['LLVM_ENABLE_LIBCXX'] = 'ON'
 
     return defines
 
@@ -1179,9 +1179,7 @@ def pgo_llvm_build(args, dirs):
     # Then, build LLVM as if it were the full final toolchain
     stage = "pgo"
     dirs.build_folder.joinpath(stage).mkdir(parents=True, exist_ok=True)
-    if not args.incremental or not dirs.build_folder.joinpath(
-            "stage3", "build.ninja").is_file():
-        invoke_cmake(args, dirs, None, stage)
+    invoke_cmake(args, dirs, None, stage)
     invoke_ninja(args, dirs, stage)
 
 
@@ -1215,6 +1213,11 @@ def generate_pgo_profiles(args, dirs):
 def do_multistage_build(args, dirs, env_vars):
     if args.build_stage:
         stages = [args.build_stage]
+        if args.build_stage >= 2:
+            args.lto = 'full'
+            if args.build_stage >= 3:
+                args.pgo = ('kernel-defconfig')
+
     else:
         stages = [1]
 

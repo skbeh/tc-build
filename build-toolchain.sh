@@ -1,51 +1,78 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+set -euo pipefail
 
+cmake_c_flags=(-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-plt -fno-stack-protector)
 args=()
+mcpu=()
 
-case "$1" in
-    -s)
-        args+=(--build-stage "$2")
-        if [ "$2" -ge 2 ]; then
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -s)
+            build_stage="$2"
+            args+=(--build-stage "$build_stage")
+            if [ "$build_stage" -ge 2 ]; then
+                args+=(--incremental)
+            fi
+            shift
+            shift
+            ;;
+        -c)
+            mcpu=(-march="$2" -mtune="$2")
+            shift
+            shift
+            ;;
+        -i)
             args+=(--incremental)
-        fi
-        if [ "$2" -eq 3 ]; then
-            args+=(--pgo kernel-defconfig)
-        fi
-        ;;
-    '')
-        args+=(--pgo kernel-defconfig)
-        ;;
-    *)
-        echo "$(basename "$0"):usage: [-s build_stage]"
-        exit 1
-        ;;
-esac
+            shift
+            ;;
+        -p)
+	    args+=(--pgo kernel-defconfig --pgo llvm)
+	    shift
+	    ;;
+        '')
+            args+=(--pgo kernel-defconfig --pgo llvm)
+            shift
+            shift
+            ;;
+        *)
+            echo "$(basename "$0"):usage: [-s build_stage] [-c mcpu] [-i incremental]"
+            exit 1
+            ;;
+    esac
+done
+
+[ -z "${build_stage:-}" ] && build_stage=''
+[ ${#mcpu[@]} -eq 0 ] && cmake_c_flags+=(-march=x86-64-v3) || cmake_c_flags+=("${mcpu[@]}")
 
 # Function to show an informational message
 function msg() {
     echo -e "\e[1;32m$*\e[0m"
 }
 
-CMAKE_C_FLAGS='-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-plt -fno-stack-protector -march=x86-64-v3'
-cmake_flags=(CMAKE_C_FLAGS="$CMAKE_C_FLAGS" CMAKE_CXX_FLAGS="$CMAKE_C_FLAGS")
+cmake_flags=(CMAKE_C_FLAGS="${cmake_c_flags[*]}" CMAKE_CXX_FLAGS="${cmake_c_flags[*]}")
 
 # Don't touch repo if running on CI
-[ -z "$GITHUB_RUN_ID" ] && args+=(--shallow-clone) || args+=(--no-update) && cmake_flags+=("LLVM_PARALLEL_LINK_JOBS=1")
+if [ -z "${GITHUB_RUN_ID:-}" ]; then
+    args+=(--shallow-clone)
+    cmake_flags+=(LLVM_PARALLEL_LINK_JOBS=1)
+else
+    args+=(--no-update)
+    cmake_flags+=(LLVM_PARALLEL_LINK_JOBS=1)
+fi
 
 # Build LLVM
 msg "Building LLVM..."
-./build-llvm.py --targets 'AArch64;X86' \
+./build-llvm.py --targets 'AArch64;ARM;BPF;X86' \
     --lto full \
     --no-ccache \
     -D "${cmake_flags[@]}" \
-    -b release/13.x \
+    -b 'llvmorg-13.0.0' \
     "${args[@]}"
 
 # Build binutils
 msg "Building binutils..."
-./build-binutils.py --targets aarch64 x86_64
+./build-binutils.py --targets aarch64 x86_64 -m native
 
 # Remove unused products
 msg "Removing unused products..."
@@ -68,6 +95,6 @@ for bin in $(find install -mindepth 2 -maxdepth 3 -type f -exec file {} \; | gre
     # shellcheck disable=SC2016
     patchelf --set-rpath '$ORIGIN/../lib' "$bin"
 done
-if [ -z "$1" ] || [ "$1" == 3 ]; then
+if [ -n "${GITHUB_RUN_ID:-}" ] && [ "$build_stage" -eq 3 ]; then
     tar --zstd -cf clang.tar.zst install
 fi

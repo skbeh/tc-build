@@ -8,6 +8,7 @@ import pathlib
 import platform
 import shutil
 import subprocess
+
 import utils
 
 
@@ -149,7 +150,7 @@ def invoke_configure(build_folder, install_folder, root_folder, target,
     """
     configure = [
         root_folder.joinpath(utils.current_binutils(), "configure").as_posix(),
-        'CC=gcc', 'CXX=g++', '--disable-compressed-debug-sections',
+        'CC=clang', 'CXX=clang++', '--disable-compressed-debug-sections',
         '--disable-gdb', '--disable-werror', '--enable-deterministic-archives',
         '--enable-new-dtags', '--enable-plugins', '--enable-threads',
         '--prefix=%s' % install_folder.as_posix(), '--quiet',
@@ -157,8 +158,10 @@ def invoke_configure(build_folder, install_folder, root_folder, target,
     ]
     if host_arch:
         configure += [
-            'CFLAGS=-O2 -march=%s -mtune=%s' % (host_arch, host_arch),
-            'CXXFLAGS=-O2 -march=%s -mtune=%s' % (host_arch, host_arch)
+            'CFLAGS=-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-plt -fno-stack-protector -march=%s -mtune=%s'
+            % (host_arch, host_arch),
+            'CXXFLAGS=-pipe -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -fno-semantic-interposition -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-plt -fno-stack-protector -march=%s -mtune=%s'
+            % (host_arch, host_arch)
         ]
     else:
         configure += ['CFLAGS=-O2', 'CXXFLAGS=-O2']
