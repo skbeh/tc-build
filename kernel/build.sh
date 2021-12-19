@@ -100,16 +100,16 @@ function setup_krnl_src() {
     if [[ -n ${KERNEL_SRC} ]]; then
         cd "${KERNEL_SRC}" || exit 1
     else
-        LINUX=linux-5.15
+        LINUX=linux-5.15.10
         LINUX_TARBALL=${KRNL}/${LINUX}.tar.xz
 
         # If we don't have the source tarball, download and verify it
         if [[ ! -f ${LINUX_TARBALL} ]]; then
-            curl -LSso "${LINUX_TARBALL}" https://cdn.kernel.org/pub/linux/kernel/v5.x/"${LINUX_TARBALL##*/}"
+            curl -LSso "${LINUX_TARBALL}" https://mirrors.tuna.tsinghua.edu.cn/kernel/v5.x/"${LINUX_TARBALL##*/}"
 
             (
                 cd "${LINUX_TARBALL%/*}" || exit 1
-                curl -Ls https://cdn.kernel.org/pub/linux/kernel/v5.x/sha256sums.asc | sha256sum -c --quiet --ignore-missing -
+                curl -Ls https://mirrors.tuna.tsinghua.edu.cn/kernel/v5.x/sha256sums.asc | sha256sum -c --quiet --ignore-missing -
             ) || {
                 echo "Linux tarball verification failed! Please remove '${LINUX_TARBALL}' and try again."
                 exit 1

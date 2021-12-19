@@ -27,11 +27,11 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -p)
-            args+=(--pgo kernel-defconfig --pgo llvm)
+            args+=(--pgo kernel-defconfig llvm)
             shift
             ;;
         '')
-            args+=(--pgo kernel-defconfig --pgo llvm)
+            args+=(--pgo kernel-defconfig llvm)
             shift
             shift
             ;;
@@ -55,16 +55,14 @@ cmake_flags=(CMAKE_C_FLAGS="${cmake_c_flags[*]}" CMAKE_CXX_FLAGS="${cmake_c_flag
 # Don't touch repo if running on CI
 if [ -z "${GITHUB_RUN_ID:-}" ]; then
     args+=(--shallow-clone)
-    cmake_flags+=(LLVM_PARALLEL_LINK_JOBS=1)
 else
     args+=(--no-update)
-    cmake_flags+=(LLVM_PARALLEL_LINK_JOBS=1)
 fi
 
 # Build LLVM
 msg "Building LLVM..."
 ./build-llvm.py --targets 'AArch64;ARM;BPF;X86' \
-    --lto full \
+    --lto thin \
     --no-ccache \
     -D "${cmake_flags[@]}" \
     -b 'llvmorg-13.0.0' \

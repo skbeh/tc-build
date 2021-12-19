@@ -853,13 +853,7 @@ def project_cmake_defines(args, stage):
         else:
             projects = "all"
     else:
-        if bootstrap_stage(args, stage):
-            projects = "clang;lld;polly"
-            if args.pgo:
-                projects += ';compiler-rt'
-        elif instrumented_stage(args, stage):
-            projects = "clang;lld;polly"
-        elif args.projects:
+        if args.projects:
             projects = args.projects
         else:
             projects = "clang;compiler-rt;lld;polly"
@@ -959,7 +953,6 @@ def stage_specific_cmake_defines(args, dirs, stage):
         # Build with instrumentation if we are using PGO and on stage 2
         if instrumented_stage(args, stage):
             defines['LLVM_BUILD_INSTRUMENTED'] = 'IR'
-            defines['LLVM_BUILD_RUNTIME'] = 'OFF'
             defines['LLVM_VP_COUNTERS_PER_SITE'] = '3'
 
         # If we are at the final stage, use PGO/Thin LTO if requested
