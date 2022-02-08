@@ -15,9 +15,12 @@ jobs:
         run: |
           sudo -E apt update
           sudo -E apt install -y cmake ninja-build libelf-dev patchelf libeatmydata1 libc++1
-          wget -q https://github.com/kdrag0n/proton-clang/archive/refs/heads/master.zip
-          unzip master.zip && rm master.zip
-          sudo cp -r proton-clang-master/* /usr && rm -r proton-clang-master
+
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: 13.0.1
+          force-version: true
 
       - name: Download scripts
         uses: actions/checkout@v2
