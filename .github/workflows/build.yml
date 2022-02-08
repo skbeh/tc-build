@@ -14,7 +14,7 @@ jobs:
           DEBIAN_FRONTEND: "noninteractive"
         run: |
           sudo -E apt update
-          sudo -E apt install -y cmake ninja-build libelf-dev patchelf libeatmydata1
+          sudo -E apt install -y cmake ninja-build libelf-dev patchelf libeatmydata1 libc++1
           wget -q https://github.com/kdrag0n/proton-clang/archive/refs/heads/master.zip
           unzip master.zip && rm master.zip
           sudo cp -r proton-clang-master/* /usr && rm -r proton-clang-master
