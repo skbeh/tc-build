@@ -857,6 +857,8 @@ def project_cmake_defines(args, stage):
             projects = args.projects
         else:
             projects = "clang;compiler-rt;lld;polly"
+            if stage == get_final_stage(args):
+                projects += ";lldb"
 
     defines['LLVM_ENABLE_PROJECTS'] = projects
 
