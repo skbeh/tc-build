@@ -18,8 +18,8 @@ jobs:
       id: sync
       uses: aormsby/Fork-Sync-With-Upstream-action@v3.2
       with:
-        target_sync_branch: master
-        upstream_sync_branch: master
+        target_sync_branch: build
+        upstream_sync_branch: main
         upstream_sync_repo: ClangBuiltLinux/tc-build
 
     - name: New commits found
