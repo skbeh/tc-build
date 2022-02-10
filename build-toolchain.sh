@@ -65,7 +65,7 @@ msg "Building LLVM..."
     --lto thin \
     --no-ccache \
     -D "${cmake_flags[@]}" \
-    -b 'llvmorg-13.0.1' \
+    -b 'llvmorg-14.0.0' \
     "${args[@]}"
 
 # Build binutils
